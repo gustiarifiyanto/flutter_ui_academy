@@ -103,8 +103,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Formulir Registrasi'),
-    
-    ));
+    return Scaffold(
+      appBar: AppBar(title: Text('Formulir Registrasi'), centerTitle: true),
+    );
   }
 }
