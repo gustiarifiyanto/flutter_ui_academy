@@ -104,7 +104,39 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Formulir Registrasi'), centerTitle: true),
+      appBar: AppBar(
+        title: Text('Formulir Registrasi'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(child: Column(children: [_buildNameField()])),
+      ),
+    );
+  }
+
+  Widget _buildNameField() {
+    return TextFormField(
+      controller: _nameController,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: 'Nama Lengkap',
+        hintText: 'Masukan Nama Lengkap',
+        prefixIcon: const Icon(Icons.person_4_outlined),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        filled: true,
+        fillColor: Colors.blueGrey.shade50,
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Nama Tidak Boleh Kosong';
+        }
+        if (value.length < 3) {
+          return 'Nama Minimal 3 Karakter';
+        }
+        return null;
+      },
     );
   }
 }
