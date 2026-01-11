@@ -61,6 +61,59 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
+  Widget _buildGenderRadio() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Jenis Kelamin',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey.shade300),
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.blueGrey.shade50,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: RadioListTile<String>(
+                  title: const Text('Laki-laki'),
+                  value: 'Laki-laki',
+                  groupValue: _selectedGender,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGender = value;
+                    });
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                ),
+              ),
+              Expanded(
+                child: RadioListTile<String>(
+                  title: const Text('Perempuan'),
+                  value: 'Perempuan',
+                  groupValue: _selectedGender,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGender = value;
+                    });
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   //Form Submission
 
   void submitForm() {
@@ -98,6 +151,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         );
         return;
       }
+      _showResultDialog();
     }
   }
 
@@ -283,6 +337,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
+  Widget _buildNewsletterCheckbox() {
+    return CheckboxListTile(
+      value: _subcribeNewsletter,
+      onChanged: (value) {
+        setState(() {
+          _subcribeNewsletter = value ?? false;
+        });
+      },
+      title: const Text('Berlangganan Koran'),
+      subtitle: const Text('Dapatkan Info Terbaru Dari Aplikasi'),
+      secondary: const Icon(Icons.mail_lock_outlined),
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.zero,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -291,26 +361,34 @@ class _RegistrationPageState extends State<RegistrationPage> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _buildHeader(),
-              SizedBox(height: 10),
-              _buildNameField(),
-              SizedBox(height: 10),
-              _buildEmailField(),
-              SizedBox(height: 10),
-              _buildPasswordField(),
-              SizedBox(height: 10),
-              _buildDatePicker(),
-              SizedBox(height: 10),
-              _buildTermsCheckbox(),
-              SizedBox(height: 10),
-              _buildButtons(),
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _buildHeader(),
+                SizedBox(height: 10),
+                _buildNameField(),
+                SizedBox(height: 10),
+                _buildEmailField(),
+                SizedBox(height: 10),
+                _buildPasswordField(),
+                SizedBox(height: 10),
+                _buildDatePicker(),
+                SizedBox(height: 10),
+                _buildGenderRadio(),
+                SizedBox(height: 10),
+                _buildCityDropdown(),
+                SizedBox(height: 10),
+                _buildNewsletterCheckbox(),
+                SizedBox(height: 10),
+                _buildTermsCheckbox(),
+                SizedBox(height: 10),
+                _buildButtons(),
+              ],
+            ),
           ),
         ),
       ),
@@ -326,7 +404,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           SizedBox(
             width: 100,
             child: Text(
-              '&label:',
+              '$label:',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -387,6 +465,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controlAffinity: ListTileControlAffinity.leading,
       contentPadding: EdgeInsets.zero,
       activeColor: Colors.green,
+    );
+  }
+
+  Widget _buildCityDropdown() {
+    return DropdownButtonFormField<String>(
+      initialValue: _selectedCity,
+      decoration: InputDecoration(
+        labelText: 'Kota',
+        prefixIcon: const Icon(Icons.location_city_outlined),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        filled: true,
+        fillColor: Colors.blueGrey.shade50,
+      ),
+      hint: const Text('Pilihlah Kota'),
+      items: _cities.map((city) {
+        return DropdownMenuItem(value: city, child: Text(city));
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedCity = value;
+        });
+      },
     );
   }
 
